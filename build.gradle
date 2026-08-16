@@ -14,20 +14,20 @@ repositories {
 }
 
 def runeLiteVersion = 'latest.release'
-def pluginMainClass = 'com.example.ExamplePluginTest'
+def pluginMainClass = 'com.osrsadvisor.plugin.AdvisorPluginLauncher'
 
 dependencies {
-	compileOnly group: 'net.runelite', name:'client', version: runeLiteVersion
+	compileOnly group: 'net.runelite', name: 'client', version: runeLiteVersion
 
-	compileOnly 'org.projectlombok:lombok:1.18.30'
-	annotationProcessor 'org.projectlombok:lombok:1.18.30'
+	compileOnly 'org.projectlombok:lombok:1.18.34'
+	annotationProcessor 'org.projectlombok:lombok:1.18.34'
 
-	testImplementation 'junit:junit:4.12'
-	testImplementation group: 'net.runelite', name:'client', version: runeLiteVersion
-	testImplementation group: 'net.runelite', name:'jshell', version: runeLiteVersion
+	testImplementation 'junit:junit:4.13.2'
+	testImplementation group: 'net.runelite', name: 'client', version: runeLiteVersion
 }
 
-group = 'com.example'
+group = 'com.osrsadvisor'
+version = '1.1.0'
 
 tasks.withType(JavaCompile).configureEach {
 	options.encoding = 'UTF-8'
@@ -37,9 +37,15 @@ tasks.withType(JavaCompile).configureEach {
 tasks.register('run', JavaExec) {
 	classpath = sourceSets.test.runtimeClasspath
 	mainClass = pluginMainClass
+	// -ea: ExternalPluginManager.loadBuiltin refuses to run without assertions on.
+	// --add-opens: RuneLite's own ReflectUtil dumps a stack trace on JDK 17 without it.
+	jvmArgs '-ea', '--add-opens', 'java.base/java.lang.reflect=ALL-UNNAMED'
+	args '--developer-mode', '--debug'
+}
 
-	jvmArgs "-ea"
-	args "--developer-mode", "--debug"
+// The name tools/dev-start.{ps1,sh} in the planning workspace invoke.
+tasks.register('runClient') {
+	dependsOn 'run'
 }
 
 tasks.register('shadowJar', Jar) {
