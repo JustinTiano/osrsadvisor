@@ -5,11 +5,12 @@ A RuneLite sidebar panel that renders quest and training recommendations from yo
 skill gates to close first, costed Fastest / Balanced / AFK training routes for each gate,
 and a merged Grand Exchange shopping list for the steps ahead.
 
-> **This plugin requires a companion server and does nothing without one.** It is the
-> in-game front end of a personal account-planning workspace. The server software is not
-> yet publicly available — watch this repository if you're interested in self-hosting it.
-> Until then, installing the plugin without a server will only show a "companion server
-> not reachable" notice.
+> **This plugin requires a companion server and does nothing without one.** The server
+> is free and self-hosted:
+> **[JustinTiano/osrsadvisor-server](https://github.com/JustinTiano/osrsadvisor-server)**
+> — Python 3.10+ standard library only, one command (`python tools/osrs.py serve`), and
+> this plugin's default settings already point at it. Without one running, the panel
+> shows a "companion server not reachable" notice.
 
 ## What it sends, and where
 
