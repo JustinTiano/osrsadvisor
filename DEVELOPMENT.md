@@ -38,21 +38,19 @@ to Client arguments, launch OSRS once through the Jagex Launcher; that writes
 grants account access bypassing your password — never share or commit it, and delete it
 (or "End sessions" on runescape.com) when you're done.
 
-## Sideloading into a retail client
+## Sideloading (dev clients only — the launcher-run client cannot)
 
-Two pieces, both required — `~/.runelite/plugins/` is the hub's own managed cache and
-silently ignores foreign jars:
+`PluginManager.loadSideLoadPlugins` reads `~/.runelite/sideloaded-plugins/*.jar`, but
+only in developer mode, and developer mode is force-disabled on any client the
+launcher starts (`RuneLiteProperties.getLauncherVersion() == null` is part of the
+gate). `~/.runelite/plugins/` is the hub's own managed cache and silently ignores
+foreign jars. Net effect, by design: **the Jagex-launcher client only runs Plugin Hub
+plugins** — there is no flag or folder that sideloads into it.
 
-```powershell
-copy build\libs\osrs-advisor-1.1.0.jar $env:USERPROFILE\.runelite\sideloaded-plugins\
-```
-
-plus `--developer-mode` in the client arguments (**RuneLite (configure)** from the
-Start Menu — same place as the Jagex-account flag above).
-`PluginManager.loadSideLoadPlugins` only reads that folder, and only in developer mode.
-
-Sideloaded plugins aren't hub-reviewed and don't auto-update — prefer the Plugin Hub
-build once published, and delete the sideloaded jar when you switch.
+So for day-to-day play before the hub listing exists, use the dev client
+(`gradlew run` — this project loads via `loadBuiltin`, no jar copying involved).
+The sideload folder is only useful for testing the built jar in a dev client the
+way the hub would load it.
 
 ## Gotchas already hit (so you don't re-hit them)
 
