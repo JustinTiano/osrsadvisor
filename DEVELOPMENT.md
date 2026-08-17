@@ -40,12 +40,19 @@ grants account access bypassing your password — never share or commit it, and 
 
 ## Sideloading into a retail client
 
+Two pieces, both required — `~/.runelite/plugins/` is the hub's own managed cache and
+silently ignores foreign jars:
+
 ```powershell
-copy build\libs\osrs-advisor-1.1.0.jar $env:USERPROFILE\.runelite\plugins\
+copy build\libs\osrs-advisor-1.1.0.jar $env:USERPROFILE\.runelite\sideloaded-plugins\
 ```
 
+plus `--developer-mode` in the client arguments (**RuneLite (configure)** from the
+Start Menu — same place as the Jagex-account flag above).
+`PluginManager.loadSideLoadPlugins` only reads that folder, and only in developer mode.
+
 Sideloaded plugins aren't hub-reviewed and don't auto-update — prefer the Plugin Hub
-build once published.
+build once published, and delete the sideloaded jar when you switch.
 
 ## Gotchas already hit (so you don't re-hit them)
 
